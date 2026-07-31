@@ -967,7 +967,7 @@
         <div class="kpi-bar"><div class="kpi-bar-fill" id="kpiCumplBar" style="width:0%"></div></div>
         <div class="kpi-foot">
           <span><span id="kpiCumplFrac">—</span> cápsulas</span>
-          <span class="kpi-trend brand" id="kpiCumplTag">Meta 70%</span>
+          <span class="kpi-trend brand" id="kpiCumplTag">Meta 90%</span>
         </div>
       </div>
 
@@ -1010,7 +1010,7 @@
         <div class="kpi-value" id="kpiTiendas">—</div>
         <div class="kpi-bar"><div class="kpi-bar-fill" id="kpiTiendasBar" style="width:0%"></div></div>
         <div class="kpi-foot">
-          <span><span id="kpiTiendasOk">—</span> con cumpl. ≥70%</span>
+          <span><span id="kpiTiendasOk">—</span> con cumpl. ≥90%</span>
           <span class="kpi-trend neutral" id="kpiTiendasTag">—</span>
         </div>
       </div>
@@ -1257,8 +1257,8 @@ const uniq = (arr) => [...new Set(arr)].sort((a,b) => a.localeCompare(b, 'es'));
 
 function classifyPct(v) {
   if (v == null) return 'neutral';
-  if (v >= 70) return 'good';
-  if (v >= 40) return 'warn';
+  if (v >= 90) return 'good';
+  if (v >= 60) return 'warn';
   return 'critical';
 }
 function classifyNota(v) {
@@ -1286,8 +1286,8 @@ function mix(c1, c2, t) {
 
 // Color a value semantically
 function semanticColor(pct) {
-  if (pct >= 70) return PALETTE.credigreen;
-  if (pct >= 40) return PALETTE.crediTurq;
+  if (pct >= 90) return PALETTE.credigreen;
+  if (pct >= 60) return PALETTE.crediTurq;
   return PALETTE.jamarRedDeep;
 }
 
@@ -1447,11 +1447,11 @@ function renderKPIs(rows) {
   document.getElementById('kpiCumplFrac').textContent = `${a.completed.toLocaleString('es-CO')}/${a.total.toLocaleString('es-CO')}`;
   const cBar = document.getElementById('kpiCumplBar');
   cBar.style.width = Math.min(100, a.cumplPct) + '%';
-  cBar.className = 'kpi-bar-fill ' + (a.cumplPct >= 70 ? '' : a.cumplPct >= 40 ? 'is-warn' : 'is-critical');
+  cBar.className = 'kpi-bar-fill ' + (a.cumplPct >= 90 ? '' : a.cumplPct >= 60 ? 'is-warn' : 'is-critical');
   const cTag = document.getElementById('kpiCumplTag');
-  if (a.cumplPct >= 70) { cTag.textContent = 'Meta cumplida'; cTag.className = 'kpi-trend up'; }
-  else if (a.cumplPct >= 40) { cTag.textContent = `Brecha ${(70 - a.cumplPct).toFixed(0)}pp`; cTag.className = 'kpi-trend brand'; }
-  else { cTag.textContent = `Brecha ${(70 - a.cumplPct).toFixed(0)}pp`; cTag.className = 'kpi-trend down'; }
+  if (a.cumplPct >= 90) { cTag.textContent = 'Meta cumplida'; cTag.className = 'kpi-trend up'; }
+  else if (a.cumplPct >= 60) { cTag.textContent = `Brecha ${(90 - a.cumplPct).toFixed(0)}pp`; cTag.className = 'kpi-trend brand'; }
+  else { cTag.textContent = `Brecha ${(90 - a.cumplPct).toFixed(0)}pp`; cTag.className = 'kpi-trend down'; }
 
   document.getElementById('kpiNotaAvg').textContent = a.notaAvg != null ? a.notaAvg.toFixed(2) : '—';
   document.getElementById('kpiNotaCount').textContent = a.notaCount.toLocaleString('es-CO');
@@ -1479,7 +1479,7 @@ function renderKPIs(rows) {
 
   document.getElementById('kpiTiendas').textContent = a.tiendas;
   const tienda_agg = aggregateBy(rows, 'tienda');
-  const tiendasOk = tienda_agg.filter(t => t.cumplPct >= 70).length;
+  const tiendasOk = tienda_agg.filter(t => t.cumplPct >= 90).length;
   document.getElementById('kpiTiendasOk').textContent = tiendasOk;
   document.getElementById('kpiTiendasBar').style.width = (a.tiendas ? (tiendasOk / a.tiendas * 100) : 0) + '%';
   const tTag = document.getElementById('kpiTiendasTag');
@@ -1884,7 +1884,7 @@ function renderTable(rows) {
     body.innerHTML = '<tr><td colspan="6"><div class="empty-state"><span class="em">Sin resultados</span>Ajusta los filtros o la búsqueda.</div></td></tr>';
   } else {
     body.innerHTML = visible.map(p => {
-      const fillCls = p.cumplPct >= 70 ? '' : p.cumplPct >= 40 ? 'warn' : 'critical';
+      const fillCls = p.cumplPct >= 90 ? '' : p.cumplPct >= 60 ? 'warn' : 'critical';
       const notaCls = classifyNota(p.nota);
       const notaTxt = p.nota != null ? p.nota.toFixed(2) : 'sin nota';
       return `<tr class="person-row" data-id="${p.id}">
@@ -1979,7 +1979,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
-  document.getElementById('lastUpdate').textContent = '27 jul 2026';
+  document.getElementById('lastUpdate').textContent = '31 jul 2026';
   populateFilters();
   bindFilterEvents();
   const searchEl = document.getElementById('searchInput');
